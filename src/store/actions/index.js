@@ -1,4 +1,5 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/database';
 import {
     FETCH_LOGS,
     LOG_SENT,
@@ -8,7 +9,7 @@ import {
     DEFAULT_LIMIT_LOGS
 } from '../../constants';
 
-import sortedKeysBy from '../../helpers/sortedKeysBy';
+import timestampComparator from '../../helpers/timestampComparator';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 
@@ -35,8 +36,12 @@ export function fetchLogs(lastTimestamp = null, limit = DEFAULT_LIMIT_LOGS) {
                         key,
                         ...values[key]
                     }))
-                    .sort(item => -item.timestamp);
-
+                    .sort(timestampComparator);
+                console.log(
+                    data.map(item =>
+                        new Date(item.timestamp).toLocaleTimeString()
+                    )
+                );
                 if (lastTimestamp) {
                     // remove the lastTimestamp's item
                     data.shift();
@@ -62,15 +67,6 @@ export function fetchLogs(lastTimestamp = null, limit = DEFAULT_LIMIT_LOGS) {
                     }
                 });
             });
-
-        // ref.on('value', snapshot => {
-        //     const payload = snapshot.val();
-        //     console.log(snapshot);
-        //     dispatch({
-        //         type: FETCH_LOGS,
-        //         payload
-        //     });
-        // });
     };
 }
 

@@ -14,6 +14,8 @@
 body {
     font-family: "Courier New", Courier, monospace;
     box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
 html {
@@ -26,12 +28,16 @@ html {
     min-height: 100vh;
 }
 
-#root, .stats, .button {
+#root,
+.stats,
+.button {
     .dark-theme();
 }
 
 .white-theme {
-    #root, .stats, .button {
+    #root,
+    .stats,
+    .button {
         .white-theme();
     }
 }
@@ -66,15 +72,15 @@ html {
     &:active {
         transform: translateY(1px);
         &:focus {
-            box-shadow:  0 0 10px -3px;
+            box-shadow: 0 0 10px -3px;
         }
     }
     &:focus {
         outline: none;
-        box-shadow: 0 0 0 1px;  
+        box-shadow: 0 0 0 1px;
     }
 }
 
-@import 'stats.less';
-@import 'logs.less';
-@import 'placeholder.less';
+@import "stats.less";
+@import "logs.less";
+@import "placeholder.less";

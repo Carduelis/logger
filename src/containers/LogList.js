@@ -1,18 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+
+import { DEFAULT_LIMIT_LOGS } from '../constants';
+
 import LogEntry from './LogEntry';
 import LoadLogsButton from './LoadLogsButton';
-import { DEFAULT_LIMIT_LOGS } from '../constants';
 import Placeholder from './Placeholder';
 
 import { fetchLogs } from '../store/actions';
 class LogList extends Component {
     state = {
         lastTimestamp: null,
-        limit: DEFAULT_LIMIT_LOGS,
-        logsArray: []
+        limit: DEFAULT_LIMIT_LOGS
     };
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps) {
         const { logs } = nextProps;
         const lastTimestamp = logs.length
             ? logs[logs.length - 1].timestamp
@@ -22,7 +23,6 @@ class LogList extends Component {
         };
     }
     handleClick = () => {
-        const { length } = this.state.logsArray;
         this.props.fetchLogs(this.state.lastTimestamp);
     };
     render() {

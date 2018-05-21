@@ -31,9 +31,16 @@ html {
 #root,
 .stats,
 .button {
-    .dark-theme();
+    .white-theme();
 }
 
+.dark-theme {
+    #root,
+    .stats,
+    .button {
+        .white-theme();
+    }
+}
 .white-theme {
     #root,
     .stats,
@@ -79,8 +86,22 @@ html {
         outline: none;
         box-shadow: 0 0 0 1px;
     }
+    &--pending {
+        animation: ButtonLevitating 1s linear infinite;
+        animation-direction: alternate;
+    }
 }
 
+@keyframes ButtonLevitating {
+    0% {
+        transform: translateY(-5%);
+    }
+    100% {
+        transform: translateY(5%);
+    }
+}
+
+@import "loader.less";
 @import "stats.less";
 @import "logs.less";
 @import "placeholder.less";

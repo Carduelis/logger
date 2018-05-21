@@ -18,6 +18,6 @@ export const LOG_SENT = 'LOG_SENT';
 export const LOG_ADDED = 'LOG_ADDED';
 export const LOG_ADD_ERROR = 'LOG_ADD_ERROR';
 
-export const DEFAULT_LIMIT_LOGS = 20;
+export const DEFAULT_LIMIT_LOGS = 100;
 
 export const EVENTS = LIST_OF_EVENTS;

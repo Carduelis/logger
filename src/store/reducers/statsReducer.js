@@ -7,9 +7,8 @@ export default function(state = {}, action) {
             // payload is a chunk of messages
             // we need to
             if (payload.status === 'done') {
-                const { data } = payload;
-                const timeStart = performance.now();
-                const newState = data.reduce(
+                const { list } = payload;
+                const newState = list.reduce(
                     (acc, log) => {
                         const { severity } = log;
                         const severities = acc[severity];
@@ -17,7 +16,7 @@ export default function(state = {}, action) {
                             severities[log.key] = true;
                         } else {
                             console.warn(
-                                `[Ok] Unexpected severity status: ${key}`
+                                `[Ok] Unexpected severity status: ${log.key}`
                             );
                             acc[severity] = { [log.key]: true };
                         }
@@ -25,8 +24,6 @@ export default function(state = {}, action) {
                     },
                     { ...state }
                 );
-                const timeEnd = performance.now();
-                console.log(`Took: ${timeEnd - timeStart} ms`);
                 return newState;
             }
             return state;

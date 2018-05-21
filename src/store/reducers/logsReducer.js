@@ -1,17 +1,26 @@
 import { FETCH_LOGS } from '../../constants';
 
-export default function(state = {}, action) {
+export const getStatus = state => state.data.logs.status;
+export const getList = state => state.data.logs.list;
+
+export default function(
+    state = {
+        list: [],
+        status: 'initialized'
+    },
+    action
+) {
     const { type, payload } = action;
     switch (type) {
         case FETCH_LOGS: {
-            if (payload.status === 'done') {
-                const timeStart = performance.now();
-                const newState = [...state, ...payload.data];
-                const timeEnd = performance.now();
-                console.log(`Took: ${timeEnd - timeStart} ms`);
-                return newState;
+            const { status } = payload;
+            if (status === 'done') {
+                return {
+                    status,
+                    list: [...state.list, ...payload.list]
+                };
             }
-            return state;
+            return { ...state, status };
         }
         default: {
             return state;

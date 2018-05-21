@@ -1,6 +1,9 @@
 export default {
     data: {
-        logs: [],
+        logs: {
+            list: [],
+            status: 'initialized'
+        },
         stats: {
             WARN: {},
             ERROR: {},

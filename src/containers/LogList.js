@@ -3,21 +3,35 @@ import { connect } from 'react-redux';
 
 import { DEFAULT_LIMIT_LOGS } from '../constants';
 
+import PropTypes from 'prop-types';
 import LogEntry from './LogEntry';
 import LoadLogsButton from './LoadLogsButton';
 import Placeholder from './Placeholder';
 
 import { fetchLogs } from '../store/actions';
-class LogList extends Component {
+import { getStatus, getList } from '../store/reducers/logsReducer';
+import getLastTimestamp from '../helpers/getLastTimestamp';
+
+@connect(
+    state => ({
+        list: getList(state),
+        status: getStatus(state)
+    }),
+    { fetchLogs }
+)
+export default class LogList extends Component {
     state = {
         lastTimestamp: null,
         limit: DEFAULT_LIMIT_LOGS
     };
+    static propTypes = {
+        list: PropTypes.array,
+        fetchLogs: PropTypes.func,
+        status: PropTypes.string
+    };
     static getDerivedStateFromProps(nextProps) {
-        const { logs } = nextProps;
-        const lastTimestamp = logs.length
-            ? logs[logs.length - 1].timestamp
-            : null;
+        const { list } = nextProps;
+        const lastTimestamp = list.length ? getLastTimestamp(list) : null;
         return {
             lastTimestamp
         };
@@ -27,8 +41,8 @@ class LogList extends Component {
     };
     render() {
         const { limit } = this.state;
-        const { logs } = this.props;
-        if (logs.length === 0) {
+        const { list, status } = this.props;
+        if (list.length === 0) {
             return (
                 <Fragment>
                     <div className="log-list log-list--empty">
@@ -37,6 +51,7 @@ class LogList extends Component {
                     <LoadLogsButton
                         handleClick={this.handleClick}
                         text={`Load first ${limit} logs`}
+                        status={status}
                     />
                 </Fragment>
             );
@@ -44,21 +59,16 @@ class LogList extends Component {
         return (
             <Fragment>
                 <div className="log-list">
-                    {logs.map((item, index) => (
+                    {list.map((item, index) => (
                         <LogEntry key={item.key} {...item} index={index} />
                     ))}
                 </div>
                 <LoadLogsButton
                     handleClick={this.handleClick}
-                    text={`Load ${limit} more`}
+                    text={`Load ${limit} more.`}
+                    status={status}
                 />
             </Fragment>
         );
     }
 }
-
-const mapStateToProps = state => ({
-    logs: state.data.logs
-});
-
-export default connect(mapStateToProps, { fetchLogs })(LogList);

@@ -31,29 +31,29 @@ export function fetchLogs(lastTimestamp = null, limit = DEFAULT_LIMIT_LOGS) {
             .once('value')
             .then(snapshot => {
                 const values = snapshot.val();
-                const data = Object.keys(values)
+                const list = Object.keys(values)
                     .map(key => ({
                         key,
                         ...values[key]
                     }))
                     .sort(timestampComparator);
-                console.log(
-                    data.map(item =>
-                        new Date(item.timestamp).toLocaleTimeString()
-                    )
-                );
+                // console.log(
+                //     list.map(item =>
+                //         new Date(item.timestamp).toLocaleTimeString()
+                //     )
+                // );
                 if (lastTimestamp) {
                     // remove the lastTimestamp's item
-                    data.shift();
+                    list.shift();
                 }
-                if (data.length === 0) {
+                if (list.length === 0) {
                     alert('There are no mors logs. Generate more logs');
                 } else {
                     dispatch({
                         type: FETCH_LOGS,
                         payload: {
                             status: 'done',
-                            data
+                            list
                         }
                     });
                 }

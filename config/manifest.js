@@ -1,9 +1,9 @@
 const path = require('path');
 
 module.exports = {
-    name: 'Pokedex by Pavel',
-    short_name: 'Pokedex',
-    description: 'Filter and search pokemons!',
+    name: 'Logger by Pavel',
+    short_name: 'Logger',
+    description: 'See logs!',
     background_color: '#8767CF',
     theme_color: '#5890E8',
     icons: [

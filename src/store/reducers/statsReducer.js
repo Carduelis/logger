@@ -9,17 +9,17 @@ export default function(state = {}, action) {
             if (payload.status === 'done') {
                 const { data } = payload;
                 const timeStart = performance.now();
-                const newState = Object.keys(data).reduce(
-                    (acc, key) => {
-                        const { severity } = data[key];
+                const newState = data.reduce(
+                    (acc, log) => {
+                        const { severity } = log;
                         const severities = acc[severity];
                         if (typeof severities === 'object') {
-                            severities[key] = true;
+                            severities[log.key] = true;
                         } else {
                             console.warn(
                                 `[Ok] Unexpected severity status: ${key}`
                             );
-                            acc[severity] = { [key]: true };
+                            acc[severity] = { [log.key]: true };
                         }
                         return acc;
                     },

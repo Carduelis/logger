@@ -7,6 +7,9 @@ import LogList from './LogList';
 import { addLog } from '../store/actions';
 import supportPassiveListeners from '../helpers/supportPassiveListeners';
 class App extends Component {
+    state = {
+        hasError: false
+    };
     listener = event => {
         const timestamp = new Date().getTime();
         const severity = SEVERITIES[timestamp % 3];
@@ -28,7 +31,20 @@ class App extends Component {
             );
         });
     }
+    componentDidCatch(error, info) {
+        console.error(error);
+        console.error(info);
+        this.setState({ hasError: true });
+    }
     render() {
+        if (this.state.hasError) {
+            return (
+                <div className="app">
+                    <h3>Sorry, app has been crashed.</h3>
+                    <p>See console for more info</p>
+                </div>
+            );
+        }
         return (
             <div className="app">
                 <Stats />

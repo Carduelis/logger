@@ -14,25 +14,21 @@ class LogList extends Component {
     };
     static getDerivedStateFromProps(nextProps, prevState) {
         const { logs } = nextProps;
-        const logsArray = Object.keys(logs)
-            .map(key => logs[key])
-            .sort(item => -item.timestamp);
-        const lastTimestamp = logsArray.length
-            ? logsArray[logsArray.length - 1].timestamp
+        const lastTimestamp = logs.length
+            ? logs[logs.length - 1].timestamp
             : null;
-        console.log(logsArray.map(i => i.timestamp));
-        console.log('lastTimestamp:', lastTimestamp);
         return {
-            lastTimestamp,
-            logsArray
+            lastTimestamp
         };
     }
     handleClick = () => {
+        const { length } = this.state.logsArray;
         this.props.fetchLogs(this.state.lastTimestamp);
     };
     render() {
-        const { limit, logsArray } = this.state;
-        if (logsArray.length === 0) {
+        const { limit } = this.state;
+        const { logs } = this.props;
+        if (logs.length === 0) {
             return (
                 <Fragment>
                     <div className="log-list log-list--empty">
@@ -48,7 +44,7 @@ class LogList extends Component {
         return (
             <Fragment>
                 <div className="log-list">
-                    {logsArray.map((item, index) => (
+                    {logs.map((item, index) => (
                         <LogEntry key={item.key} {...item} index={index} />
                     ))}
                 </div>

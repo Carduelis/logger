@@ -1,10 +1,10 @@
 export default {
     data: {
-        logs: {},
+        logs: [],
         stats: {
-            WARN: [],
-            ERROR: [],
-            INFO: []
+            WARN: {},
+            ERROR: {},
+            INFO: {}
         }
     },
     ui: {}

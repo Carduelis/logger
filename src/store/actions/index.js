@@ -13,7 +13,6 @@ import sortedKeysBy from '../../helpers/sortedKeysBy';
 firebase.initializeApp(FIREBASE_CONFIG);
 
 export function fetchLogs(lastTimestamp = null, limit = DEFAULT_LIMIT_LOGS) {
-    console.log(lastTimestamp, limit);
     return dispatch => {
         dispatch({
             type: FETCH_LOGS,
@@ -21,27 +20,38 @@ export function fetchLogs(lastTimestamp = null, limit = DEFAULT_LIMIT_LOGS) {
                 status: 'pending'
             }
         });
+        const limitToFirst = lastTimestamp ? limit + 1 : limit;
         const ref = firebase
             .database()
             .ref('/logs/')
             .orderByChild('timestamp')
+            .limitToFirst(limitToFirst)
             .startAt(lastTimestamp)
-            .limitToFirst(lastTimestamp ? limit + 1 : limit)
             .once('value')
             .then(snapshot => {
                 const values = snapshot.val();
-                const data = Object.keys(values).reduce((acc, key) => {
-                    acc[key] = { key, ...values[key] };
-                    return acc;
-                }, {});
-                console.log(Object.keys(data).map(key => data[key].timestamp));
-                dispatch({
-                    type: FETCH_LOGS,
-                    payload: {
-                        status: 'done',
-                        data
-                    }
-                });
+                const data = Object.keys(values)
+                    .map(key => ({
+                        key,
+                        ...values[key]
+                    }))
+                    .sort(item => -item.timestamp);
+
+                if (lastTimestamp) {
+                    // remove the lastTimestamp's item
+                    data.shift();
+                }
+                if (data.length === 0) {
+                    alert('There are no mors logs. Generate more logs');
+                } else {
+                    dispatch({
+                        type: FETCH_LOGS,
+                        payload: {
+                            status: 'done',
+                            data
+                        }
+                    });
+                }
             })
             .catch(snapshot => {
                 console.error(snapshot);

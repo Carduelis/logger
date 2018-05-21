@@ -13,12 +13,14 @@ class LogEntry extends Component {
     };
     render() {
         const { message, type, severity, timestamp, index } = this.props;
+
+        const timestampString = timestamp.toString();
+        const ms = timestampString.substr(timestampString.length - 3);
         return (
             <div className="log">
                 <div className="log-index">[{index}]</div>
                 <div className="log-timestamp">
-                    {timestamp}
-                    {/* {new Date(timestamp).toLocaleString()} */}
+                    {new Date(timestamp).toLocaleString()},{ms}
                 </div>
                 <Severity severity={severity} />
                 <Message message={message} type={type} />

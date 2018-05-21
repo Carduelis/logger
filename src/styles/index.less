@@ -1,0 +1,121 @@
+@whityOne: #fafafa;
+@blackyOne: #0a1d2a;
+
+.white-theme() {
+    background-color: @whityOne;
+    color: @blackyOne;
+}
+.dark-theme() {
+    background-color: @blackyOne;
+    color: @whityOne;
+}
+
+body {
+    .dark-theme();
+    font-family: "Courier New", Courier, monospace;
+    box-sizing: border-box;
+}
+@headerHeight: 4em;
+#root {
+    margin: 0 10%;
+    padding-top: @headerHeight + 1em;
+}
+
+.stats {
+    position: fixed;
+    left: 0;
+    background-color: inherit;
+    top: 0;
+    right: 0;
+    padding: 1rem 10%;
+    height: @headerHeight;
+    box-shadow: 0 4px 1rem rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: stretch;
+    &-list {
+        padding: 0 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    &-item {
+        min-width: 8em;
+        display: flex;
+        justify-content: flex-start;
+    }
+    &-count {
+        margin-left: auto;
+    }
+}
+.log-list {
+    padding: 2rem;
+}
+
+.log {
+    display: flex;
+    margin: 0.2em 0;
+    align-items: baseline;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+    &-timestamp {
+        margin-right: 1rem;
+        white-space: nowrap;
+    }
+    &-severity {
+        min-width: 4em;
+        overflow: hidden;
+        max-width: 10em;
+        text-overflow: ellipsis;
+        &:hover {
+            text-shadow: 0 0 1px;
+        }
+        &--error {
+            color: #c73413;
+            text-shadow: 0 0 1px;
+        }
+        &--warn {
+            color: #c77213;
+        }
+        &--info {
+            color: #1395c7;
+        }
+    }
+    &-message {
+        margin-left: 1rem;
+        display: flex;
+        align-items: baseline;
+        &-text {
+            padding: 0.2rem;
+        }
+        &-button {
+            margin-left: 0.5em;
+            cursor: pointer;
+            font-size: 0.8em;
+            white-space: nowrap;
+            padding: 0.2rem;
+        }
+    }
+    &:hover {
+        .log-message-button {
+            background-color: antiquewhite;
+        }
+    }
+}
+
+.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    &-icon {
+        margin: 2em 0;
+        &::before {
+            content: "...";
+            font-size: 5em;
+            opacity: 0.5;
+            display: block;
+        }
+    }
+}

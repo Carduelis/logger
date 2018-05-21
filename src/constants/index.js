@@ -14,7 +14,10 @@ export const SEVERITIES = ['INFO', 'WARN', 'ERROR'];
 export const FETCH_LOGSS = 'FETCH_LOGSS';
 export const FETCH_LOGS = 'FETCH_LOGS';
 export const LOGS_ADDED = 'LOGS_ADDED';
+export const LOG_SENT = 'LOG_SENT';
 export const LOG_ADDED = 'LOG_ADDED';
 export const LOG_ADD_ERROR = 'LOG_ADD_ERROR';
+
+export const DEFAULT_LIMIT_LOGS = 3;
 
 export const EVENTS = LIST_OF_EVENTS;

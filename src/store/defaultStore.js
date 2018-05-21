@@ -1,7 +1,11 @@
 export default {
-  data: {
-    logs: {},
-    stats: {}
-  },
-  ui: {}
+    data: {
+        logs: {},
+        stats: {
+            WARN: [],
+            ERROR: [],
+            INFO: []
+        }
+    },
+    ui: {}
 };

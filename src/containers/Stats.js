@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Severity from './Severity';
 
 class Stats extends Component {
-    static propTypes = {
-        data: PropTypes.object
-    };
+    // static propTypes = {
+    //     data: PropTypes.object
+    // };
     render() {
-        const { data } = this.props;
+        const { stats } = this.props;
 
         return (
             <div className="stats">
                 <div className="stats-list">
-                    {Object.keys(data).map(severity => (
+                    {Object.keys(stats).map(severity => (
                         <span key={severity} className="stats-item">
                             <Severity severity={severity} />:{' '}
                             <span className="stats-count">
-                                {data[severity]}
+                                {Object.keys(stats[severity]).length}
                             </span>
                         </span>
                     ))}
@@ -25,5 +26,7 @@ class Stats extends Component {
         );
     }
 }
-
-export default Stats;
+const mapStateToProps = state => ({
+    stats: state.data.stats
+});
+export default connect(mapStateToProps)(Stats);

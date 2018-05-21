@@ -1,0 +1,15 @@
+.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    &-icon {
+        margin: 2em 0;
+        &::before {
+            content: "...";
+            font-size: 5em;
+            opacity: 0.5;
+            display: block;
+        }
+    }
+}

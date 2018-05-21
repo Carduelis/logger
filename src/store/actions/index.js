@@ -1,16 +1,18 @@
 import firebase from 'firebase';
 import {
     FETCH_LOGS,
-    LOG_ADDED,
+    LOG_SENT,
     LOG_ADD_ERROR,
-    FIREBASE_CONFIG
+    FIREBASE_CONFIG,
+    LOG_ADDED,
+    DEFAULT_LIMIT_LOGS
 } from '../../constants';
 
 import sortedKeysBy from '../../helpers/sortedKeysBy';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 
-export function fetchLogs(lastTimestamp, limit) {
+export function fetchLogs(lastTimestamp = null, limit = DEFAULT_LIMIT_LOGS) {
     console.log(lastTimestamp, limit);
     return dispatch => {
         dispatch({
@@ -23,9 +25,8 @@ export function fetchLogs(lastTimestamp, limit) {
             .database()
             .ref('/logs/')
             .orderByChild('timestamp')
-            .startAt(1526842999075)
-            .limitToFirst(30)
-            // .endAt(offset + limit)
+            .startAt(lastTimestamp)
+            .limitToFirst(lastTimestamp ? limit + 1 : limit)
             .once('value')
             .then(snapshot => {
                 const values = snapshot.val();
@@ -33,7 +34,7 @@ export function fetchLogs(lastTimestamp, limit) {
                     acc[key] = { key, ...values[key] };
                     return acc;
                 }, {});
-                console.log(data);
+                console.log(Object.keys(data).map(key => data[key].timestamp));
                 dispatch({
                     type: FETCH_LOGS,
                     payload: {
@@ -72,7 +73,7 @@ export function addLog(logEntry) {
             .set({ ...logEntry })
             .then(() => {
                 dispatch({
-                    type: LOG_ADDED,
+                    type: LOG_SENT,
                     payload: {
                         id: newPost.key,
                         ...logEntry
@@ -87,4 +88,20 @@ export function addLog(logEntry) {
                 });
             });
     };
+}
+
+export function listenForANew() {
+    console.warn(
+        'Do not use, it fetches all of the data. Need to switch into Cloud Database'
+    );
+    // return dispatch => {
+    //     const ref = firebase.database().ref('/logs/');
+    //     ref.on('child_added', data => {
+    //         console.log(data);
+    //         dispatch({
+    //             type: LOG_ADDED,
+    //             payload: data
+    //         });
+    //     });
+    // };
 }
